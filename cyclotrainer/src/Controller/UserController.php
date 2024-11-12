@@ -14,6 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/user')]
 class UserController extends AbstractController
 {
+
+    #[Route('/dash', name: 'dashboard_user')]
+    public function dashboard()
+    {
+        return $this->render('user/dashboard.html.twig');
+    }
+    
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
