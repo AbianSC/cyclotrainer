@@ -20,6 +20,24 @@ class UserController extends AbstractController
     {
         return $this->render('user/dashboard.html.twig');
     }
+
+    #[Route('/dash/history', name: 'history')]
+    public function history()
+    {
+        return $this->render('user/history.html.twig');
+    }
+
+    #[Route('/dash/workouts', name: 'workouts')]
+    public function workouts()
+    {
+        return $this->render('user/workouts.html.twig');
+    }
+
+    #[Route('/dash/exercises', name: 'exercises')]
+    public function exercises()
+    {
+        return $this->render('user/exercises.html.twig');
+    }
     
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
