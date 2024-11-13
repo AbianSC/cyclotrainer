@@ -5,6 +5,16 @@
 {% block body %}
     <h1 class="text-3xl md:text-6xl text-center text-black font-bold">EXERCISES</h1>
     <div>
+        <ul>
+        {% for exercise in exercises %}
+            <li>
+                <a href="{{ path('exercise_detail' , { id: exercise.id }) }}">{{exercise.name}}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div>
 		<a href="{{ path('dashboard_user')}}">Back to dashboard</a>
 	</div>
 {% endblock %}
+

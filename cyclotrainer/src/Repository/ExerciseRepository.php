@@ -21,6 +21,14 @@ class ExerciseRepository extends ServiceEntityRepository
         parent::__construct($registry, Exercise::class);
     }
 
+    public function findAllNames()
+    {
+        return $this->createQueryBuilder('e')
+            ->select('e.id', 'e.name')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Exercise[] Returns an array of Exercise objects
 //     */

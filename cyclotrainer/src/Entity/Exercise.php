@@ -17,7 +17,7 @@ class Exercise
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $muscle_group = null;
+    private ?string $muscleGroup = null;
 
     #[ORM\Column(type: 'text')]
     private ?string $description = null;
@@ -44,12 +44,12 @@ class Exercise
 
     public function getMuscleGroup(): ?string
     {
-        return $this->muscle_group;
+        return $this->muscleGroup;
     }
 
     public function setMuscleGroup(string $muscle_group): static
     {
-        $this->muscle_group = $muscle_group;
+        $this->muscleGroup = $muscle_group;
 
         return $this;
     }

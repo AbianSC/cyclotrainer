@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Exercise;
 use App\Repository\UserRepository;
+use App\Repository\ExerciseRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -34,9 +36,22 @@ class UserController extends AbstractController
     }
 
     #[Route('/dash/exercises', name: 'exercises')]
-    public function exercises()
+    public function exercises(ExerciseRepository $exerciseRepository): Response
     {
-        return $this->render('user/exercises.html.twig');
+        $exercises = $exerciseRepository->findAllNames();
+        return $this->render('user/exercises.html.twig', [
+            'exercises' => $exercises,
+        ]);
+
+    }
+
+    #[Route('/dash/exercises/{id}', name: 'exercise_detail')]
+    public function detail(Exercise $exercise): Response
+    {
+        return $this->render('user/detail.html.twig', [
+            'exercise' => $exercise,
+        ]);
+
     }
     
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
