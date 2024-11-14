@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ExerciseRepository;
+use App\Repository\WorkoutRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ExerciseRepository::class)]
-class Exercise
+#[ORM\Entity(repositoryClass: WorkoutRepository::class)]
+class Workout
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,21 +18,34 @@ class Exercise
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $muscleGroup = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\Column(type: 'text')]
-    private ?string $description = null;
+    #[ORM\Column]
+    private ?\DateTime $update_at = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $photo = null;
+    #[ORM\ManyToOne(inversedBy: 'workout')]
+    private ?User $user = null;
 
-    #[ORM\OneToMany(targetEntity: WorkoutExercise::class, mappedBy: 'exercise')]
+    #[ORM\OneToMany(targetEntity: WorkoutExercise::class, mappedBy: 'workout')]
     private Collection $workoutExercises;
 
     public function __construct()
     {
         $this->workoutExercises = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->update_at = new \DateTime();
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->update_at = new \DateTime();
     }
 
     public function getId(): ?int
@@ -52,38 +65,38 @@ class Exercise
         return $this;
     }
 
-    public function getMuscleGroup(): ?string
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->muscleGroup;
+        return $this->created_at;
     }
 
-    public function setMuscleGroup(string $muscle_group): static
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
-        $this->muscleGroup = $muscle_group;
+        $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getUpdateAt(): ?\DateTime
     {
-        return $this->description;
+        return $this->update_at;
     }
 
-    public function setDescription(string $description): static
+    public function setUpdateAt(\DateTime $update_at): static
     {
-        $this->description = $description;
+        $this->update_at = $update_at;
 
         return $this;
     }
 
-    public function getPhoto(): ?string
+    public function getUser(): ?User
     {
-        return $this->photo;
+        return $this->user;
     }
 
-    public function setPhoto(string $photo): static
+    public function setUser(?User $user): static
     {
-        $this->photo = $photo;
+        $this->user = $user;
 
         return $this;
     }
@@ -100,7 +113,7 @@ class Exercise
     {
         if (!$this->workoutExercises->contains($workoutExercise)) {
             $this->workoutExercises->add($workoutExercise);
-            $workoutExercise->setExercise($this);
+            $workoutExercise->setWorkout($this);
         }
 
         return $this;
@@ -110,8 +123,8 @@ class Exercise
     {
         if ($this->workoutExercises->removeElement($workoutExercise)) {
             // set the owning side to null (unless already changed)
-            if ($workoutExercise->getExercise() === $this) {
-                $workoutExercise->setExercise(null);
+            if ($workoutExercise->getWorkout() === $this) {
+                $workoutExercise->setWorkout(null);
             }
         }
 

@@ -1,0 +1,14 @@
+{{ form_start(workoutForm) }}
+    {{ form_row(workoutForm.name) }}
+    
+    <h4>Exercises:</h4>
+    <div id="workout-exercises">
+        {% for exerciseForm in workoutForm.workoutExercises %}
+            <div class="exercise-item">
+                {{ form_widget(exerciseForm) }}
+            </div>
+        {% endfor %}
+    </div>
+    
+    <button type="submit" class="btn">Save Workout</button>
+{{ form_end(workoutForm) }}

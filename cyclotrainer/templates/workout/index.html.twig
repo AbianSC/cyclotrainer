@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Workout index{% endblock %}
+
+{% block body %}
+    <h1>Workout index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Created_at</th>
+                <th>Update_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for workout in workouts %}
+            <tr>
+                <td>{{ workout.id }}</td>
+                <td>{{ workout.name }}</td>
+                <td>{{ workout.createdAt ? workout.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ workout.updateAt ? workout.updateAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_workout_show', {'id': workout.id}) }}">show</a>
+                    <a href="{{ path('app_workout_edit', {'id': workout.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_workout_new') }}">Create new</a>
+{% endblock %}

@@ -3,8 +3,11 @@
 {% block title %}CycloTrainer{% endblock %}
 
 {% block body %}
-    <h1 class="text-3xl md:text-6xl text-center text-black font-bold">WORKOUTS</h1>
+    <h1 class="text-3xl md:text-6xl text-center text-black font-bold">MY WORKOUTS</h1>
     <div>
-		<a href="{{ path('dashboard_user')}}">Back to dashboard</a>
-	</div>
+		  <a href="{{ path('create_workout')}}">Add new workout</a>
+	  </div>
+    <div>
+		  <a href="{{ path('dashboard_user')}}">Back to dashboard</a>
+	  </div>
 {% endblock %}
