@@ -1,14 +1,47 @@
+{# workout/_form.html.twig #}
 {{ form_start(workoutForm) }}
-    {{ form_row(workoutForm.name) }}
-    
-    <h4>Exercises:</h4>
-    <div id="workout-exercises">
-        {% for exerciseForm in workoutForm.workoutExercises %}
-            <div class="exercise-item">
-                {{ form_widget(exerciseForm) }}
-            </div>
-        {% endfor %}
-    </div>
-    
-    <button type="submit" class="btn">Save Workout</button>
+
+    {{ form_row(workoutForm.name, { 'label': 'Workout Name' }) }}
+
+<h2>Exercises</h2>
+<div id="workout-exercises" data-prototype="{{ form_widget(workoutForm.workoutExercises.vars.prototype)|e('html_attr') }}">
+    {% for workoutExercise in workoutForm.workoutExercises %}
+        <div class="workout-exercise-item">
+            {{ form_row(workoutExercise.exercise, { 'label': 'Exercise' }) }}
+            {{ form_row(workoutExercise.reps, { 'label': 'Reps' }) }}
+            {{ form_row(workoutExercise.weight, { 'label': 'Weight' }) }}
+            {{ form_row(workoutExercise.sets, { 'label': 'Sets' }) }}
+
+            <button type="button" class="remove-exercise-btn">Remove Exercise</button>
+        </div>
+    {% endfor %}
+</div>
+
+<button type="button" id="add-exercise-btn">Add Exercise</button>
+<button type="submit" class="btn btn-primary">Save Workout</button>
+
 {{ form_end(workoutForm) }}
+
+{# Optional: JavaScript for dynamic exercise fields #}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const workoutExercisesContainer = document.getElementById('workout-exercises');
+        const addExerciseBtn = document.getElementById('add-exercise-btn');
+
+        // Set up the prototype for adding new WorkoutExercise entries dynamically
+        const prototypeTemplate = workoutExercisesContainer.dataset.prototype;
+
+        addExerciseBtn.addEventListener('click', () => {
+            // Replace '__name__' in prototype with the current number of workout exercises
+            const newFormHtml = prototypeTemplate.replace(/__name__/g, workoutExercisesContainer.children.length);
+            workoutExercisesContainer.insertAdjacentHTML('beforeend', newFormHtml);
+        });
+
+        // Event delegation for dynamically added remove buttons
+        workoutExercisesContainer.addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-exercise-btn')) {
+                event.target.closest('.workout-exercise-item').remove();
+            }
+        });
+    });
+</script>

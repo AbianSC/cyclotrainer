@@ -3,9 +3,9 @@
 {% block title %}New Workout{% endblock %}
 
 {% block body %}
-    <h1>Create new Workout</h1>
+    <h1>Create New Workout</h1>
 
-    {{ include('workout/_form.html.twig') }}
+    {{ include('workout/_form.html.twig', { workoutForm: workoutForm }) }}
 
     <a href="{{ path('workouts') }}">Back to my workouts</a>
 {% endblock %}

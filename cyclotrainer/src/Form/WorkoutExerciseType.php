@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Workout;
 use App\Entity\Exercise;
 use App\Entity\WorkoutExercise;
 use Symfony\Component\Form\AbstractType;
@@ -23,9 +22,11 @@ class WorkoutExerciseType extends AbstractType
             ->add('exercise', EntityType::class, [
                 'class' => Exercise::class,
                 'choice_label' => 'name',
+                'label' => 'Exercise',
+                'placeholder' => 'Choose an exercise',
             ]);
     }
-    
+
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -33,4 +34,6 @@ class WorkoutExerciseType extends AbstractType
         ]);
     }
 }
+
+
             

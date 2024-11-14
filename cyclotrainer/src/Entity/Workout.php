@@ -33,6 +33,8 @@ class Workout
     public function __construct()
     {
         $this->workoutExercises = new ArrayCollection();
+        $this->created_at = new \DateTimeImmutable();
+        $this->update_at = new \DateTime();
     }
 
     #[ORM\PrePersist]

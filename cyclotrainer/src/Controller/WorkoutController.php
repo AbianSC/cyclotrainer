@@ -30,6 +30,7 @@ class WorkoutController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $workout->setUser($this->getUser());
             foreach($workout->getWorkoutExercises() as $exercise) {
                 $exercise->setWorkout($workout);
                 $entityManager->persist($exercise);
@@ -82,3 +83,5 @@ class WorkoutController extends AbstractController
         return $this->redirectToRoute('app_workout_index', [], Response::HTTP_SEE_OTHER);
     }
 }
+
+
