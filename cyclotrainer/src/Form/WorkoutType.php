@@ -22,8 +22,8 @@ class WorkoutType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
-                'prototype' => true, 
-                'prototype_name' => '__name',
+                'prototype' => true, // This line enables the prototype for dynamic forms
+                'prototype_name' => '__name__', // Placeholder name used by JavaScript
             ]);
     }
 

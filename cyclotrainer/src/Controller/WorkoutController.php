@@ -30,12 +30,13 @@ class WorkoutController extends AbstractController
         $workout = new Workout();
         $form = $this->createForm(WorkoutType::class, $workout);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $workout->setUser($this->getUser());
             foreach($workout->getWorkoutExercises() as $exercise) {
                 $exercise->setWorkout($workout);
                 $entityManager->persist($exercise);
+
             }
             $entityManager->persist($workout);
             $entityManager->flush();

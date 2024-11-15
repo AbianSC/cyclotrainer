@@ -1,19 +1,19 @@
 {{ form_start(workoutForm) }}
 
-    {{ form_row(workoutForm.name, { 'label': 'Workout Name' }) }}
+{{ form_row(workoutForm.name, { 'label': 'Workout Name' }) }}
 
 <h2>Exercises</h2>
 <div id="workout-exercises" data-prototype="{{ form_widget(workoutForm.workoutExercises.vars.prototype)|e('html_attr') }}">
-    {% for workoutExercise in workoutForm.workoutExercises %}
-        <div class="workout-exercise-item">
-            {{ form_row(workoutExercise.exercise, { 'label': 'Exercise' }) }}
-            {{ form_row(workoutExercise.reps, { 'label': 'Reps' }) }}
-            {{ form_row(workoutExercise.weight, { 'label': 'Weight' }) }}
-            {{ form_row(workoutExercise.sets, { 'label': 'Sets' }) }}
+	{% for workoutExercise in workoutForm.workoutExercises %}
+		<div class="workout-exercise-item">
+			{{ form_row(workoutExercise.exercise, { 'label': 'Exercise' }) }}
+			{{ form_row(workoutExercise.reps, { 'label': 'Reps' }) }}
+			{{ form_row(workoutExercise.weight, { 'label': 'Weight' }) }}
+			{{ form_row(workoutExercise.sets, { 'label': 'Sets' }) }}
 
-            <button type="button" class="remove-exercise-btn">Remove Exercise</button>
-        </div>
-    {% endfor %}
+			<button type="button" class="remove-exercise-btn">Remove Exercise</button>
+		</div>
+	{% endfor %}
 </div>
 
 <button type="button" id="add-exercise-btn">Add Exercise</button>
@@ -21,22 +21,20 @@
 
 {{ form_end(workoutForm) }}
 
-
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+	document.addEventListener('DOMContentLoaded', function () {
         const workoutExercisesContainer = document.getElementById('workout-exercises');
         const addExerciseBtn = document.getElementById('add-exercise-btn');
 
-
+        
         const prototypeTemplate = workoutExercisesContainer.dataset.prototype;
 
         addExerciseBtn.addEventListener('click', () => {
-
             const newFormHtml = prototypeTemplate.replace(/__name__/g, workoutExercisesContainer.children.length);
             workoutExercisesContainer.insertAdjacentHTML('beforeend', newFormHtml);
         });
 
-
+        
         workoutExercisesContainer.addEventListener('click', function (event) {
             if (event.target.classList.contains('remove-exercise-btn')) {
                 event.target.closest('.workout-exercise-item').remove();
