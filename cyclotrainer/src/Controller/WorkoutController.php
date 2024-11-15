@@ -49,8 +49,9 @@ class WorkoutController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_workout_show', methods: ['GET'])]
-    public function show(Workout $workout, User $user): Response
+    public function show(Workout $workout): Response
     {   
+        $user = $this->getUser();
         return $this->render('workout/show.html.twig', [
             'workout' => $workout,
             'user' => $user,
