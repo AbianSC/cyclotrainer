@@ -3,17 +3,13 @@
 {% block title %}Workout{% endblock %}
 
 {% block body %}
-    <h1>Workout</h1>
+    <h1>{{workout.name}}</h1>
 
     <table class="table">
         <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ workout.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ workout.name }}</td>
             </tr>
             <tr>
                 <th>Created_at</th>
@@ -23,10 +19,19 @@
                 <th>Update_at</th>
                 <td>{{ workout.updateAt ? workout.updateAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+            {% for workoutExercise in workout.workoutExercises %}
+                <tr>
+                    <td><a href="{{ path('app_exercise_show', {id: workoutExercise.exercise.id})}}">{{ workoutExercise.exercise.name }}</a></td>
+                    <td>{{ workoutExercise.sets }}</td>
+                    <td>{{ workoutExercise.reps }}</td>
+                    <td>{{ workoutExercise.weight }}</td>
+                </tr>
+            {% endfor %}
+
         </tbody>
     </table>
 
-    <a href="{{ path('app_workout_index') }}">back to list</a>
+    <a href="{{ path('dashboard_user') }}">back to dashboard</a>
 
     <a href="{{ path('app_workout_edit', {'id': workout.id}) }}">edit</a>
 

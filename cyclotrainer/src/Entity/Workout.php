@@ -30,11 +30,15 @@ class Workout
     #[ORM\OneToMany(targetEntity: WorkoutExercise::class, mappedBy: 'workout')]
     private Collection $workoutExercises;
 
+    #[ORM\OneToMany(targetEntity: History::class, mappedBy: 'workout')]
+    private Collection $history;
+
     public function __construct()
     {
         $this->workoutExercises = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
         $this->update_at = new \DateTime();
+        $this->history = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -127,6 +131,36 @@ class Workout
             // set the owning side to null (unless already changed)
             if ($workoutExercise->getWorkout() === $this) {
                 $workoutExercise->setWorkout(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, History>
+     */
+    public function getHistory(): Collection
+    {
+        return $this->history;
+    }
+
+    public function addHistory(History $history): static
+    {
+        if (!$this->history->contains($history)) {
+            $this->history->add($history);
+            $history->setWorkout($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(History $history): static
+    {
+        if ($this->history->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getWorkout() === $this) {
+                $history->setWorkout(null);
             }
         }
 

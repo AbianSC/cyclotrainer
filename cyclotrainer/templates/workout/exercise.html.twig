@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CycloTrainer{% endblock %}
+
+{% block body %}
+<h1>{{ exercise.name }}</h1>
+    <div>
+        <p><strong>Grupo Muscular:</strong> {{ exercise.muscleGroup }}</p>
+        <p><strong>Descripción:</strong> {{ exercise.description }}</p>
+        <img src="{{ exercise.photo }}" alt="{{ exercise.name }}">
+    </div>
+<a href="{{ path('app_workout_show', {id: workout.id}) }}">Back</a>
+    
+{% endblock %}
+
+
+
+
+
+

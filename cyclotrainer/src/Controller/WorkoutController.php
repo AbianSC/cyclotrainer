@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Exercise;
+use App\Entity\User;
 use App\Entity\Workout;
 use App\Form\WorkoutType;
 use App\Repository\WorkoutRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/workout')]
 class WorkoutController extends AbstractController
@@ -47,12 +49,23 @@ class WorkoutController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_workout_show', methods: ['GET'])]
-    public function show(Workout $workout): Response
-    {
+    public function show(Workout $workout, User $user): Response
+    {   
         return $this->render('workout/show.html.twig', [
             'workout' => $workout,
+            'user' => $user,
         ]);
     }
+
+    #[Route('/exercise/{id}', name: 'app_exercise_show', methods: ['GET'])]
+    public function showExercise(Exercise $exercise, Workout $workout): Response
+    {
+        return $this->render('workout/exercise.html.twig', [
+            'exercise' => $exercise,
+            'workout' => $workout
+        ]);
+    }
+
 
     #[Route('/{id}/edit', name: 'app_workout_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Workout $workout, EntityManagerInterface $entityManager): Response

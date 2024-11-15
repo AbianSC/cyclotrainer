@@ -1,4 +1,3 @@
-{# workout/_form.html.twig #}
 {{ form_start(workoutForm) }}
 
     {{ form_row(workoutForm.name, { 'label': 'Workout Name' }) }}
@@ -22,22 +21,22 @@
 
 {{ form_end(workoutForm) }}
 
-{# Optional: JavaScript for dynamic exercise fields #}
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const workoutExercisesContainer = document.getElementById('workout-exercises');
         const addExerciseBtn = document.getElementById('add-exercise-btn');
 
-        // Set up the prototype for adding new WorkoutExercise entries dynamically
+
         const prototypeTemplate = workoutExercisesContainer.dataset.prototype;
 
         addExerciseBtn.addEventListener('click', () => {
-            // Replace '__name__' in prototype with the current number of workout exercises
+
             const newFormHtml = prototypeTemplate.replace(/__name__/g, workoutExercisesContainer.children.length);
             workoutExercisesContainer.insertAdjacentHTML('beforeend', newFormHtml);
         });
 
-        // Event delegation for dynamically added remove buttons
+
         workoutExercisesContainer.addEventListener('click', function (event) {
             if (event.target.classList.contains('remove-exercise-btn')) {
                 event.target.closest('.workout-exercise-item').remove();
