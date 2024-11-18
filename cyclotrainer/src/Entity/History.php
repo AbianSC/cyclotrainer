@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\HistoryRepository;
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\HistoryRepository;
 
 #[ORM\Entity(repositoryClass: HistoryRepository::class)]
 class History
@@ -14,38 +15,41 @@ class History
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TIME_IMMUTABLE)]
-    private ?\DateTimeImmutable $duration = null;
+    #[ORM\Column(type: 'string')]
+    private ?string $duration = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $dateWorkout = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)] 
+    private ?\DateTime $dateWorkout = null;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
     private ?Workout $workout = null;
+
+    #[ORM\ManyToOne(inversedBy: 'histories')]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDuration(): ?\DateTimeImmutable
+    public function getDuration(): ?string
     {
         return $this->duration;
     }
 
-    public function setDuration(\DateTimeImmutable $duration): static
-    {
+    public function setDuration(string $duration): static
+    { 
         $this->duration = $duration;
 
         return $this;
     }
 
-    public function getDateWorkout(): ?\DateTimeImmutable
+    public function getDateWorkout(): ?\DateTime
     {
         return $this->dateWorkout;
     }
 
-    public function setDateWorkout(\DateTimeImmutable $dateWorkout): static
+    public function setDateWorkout(\DateTime $dateWorkout): static
     {
         $this->dateWorkout = $dateWorkout;
 
@@ -60,6 +64,18 @@ class History
     public function setWorkout(?Workout $workout): static
     {
         $this->workout = $workout;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

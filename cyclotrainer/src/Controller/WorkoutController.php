@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Exercise;
 use App\Entity\User;
+use App\Entity\History;
 use App\Entity\Workout;
+use App\Entity\Exercise;
 use App\Form\WorkoutType;
+use App\Repository\HistoryRepository;
 use App\Repository\WorkoutRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,14 +51,74 @@ class WorkoutController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_workout_show', methods: ['GET'])]
-    public function show(Workout $workout): Response
+    #[Route('/{id}', name: 'app_workout_show', methods: ['GET', 'POST'])]
+    public function show(Workout $workout, Request $request, EntityManagerInterface $entityManager): Response
     {   
+        
         $user = $this->getUser();
+        // Verificar si el entrenamiento ha comenzado (verificamos la sesión)
+        $startTime = $request->getSession()->get('start_time_' . $workout->getId());
+        $isStarted = $startTime !== null;
+
+        if ($request->isMethod('POST')) {
+            if ($isStarted) {
+                // Si el entrenamiento ya está en progreso, finalizarlo
+                $endTime = new \DateTime();
+                $startTime = new \DateTime($startTime);
+
+                // Calcular la duración como un DateInterval
+                $duration = $startTime->diff($endTime);
+
+                // Convertir a segundos
+                $durationInSeconds = $duration->h * 3600 + $duration->i * 60 + $duration->s;
+
+                // Formatear la duración a hh:mm:ss
+                $formattedDuration = $this->formatDuration($durationInSeconds);
+
+                // Guardar el historial del entrenamiento
+                $trainingHistory = new History();
+                $trainingHistory->setWorkout($workout);
+                $trainingHistory->setDuration($formattedDuration);
+                $trainingHistory->setDateWorkout($endTime);  // La fecha de finalización
+                $trainingHistory->setUser($user);
+
+                // Guardar el historial en la base de datos
+                $entityManager->persist($trainingHistory);
+                $entityManager->flush();
+
+                // Limpiar la sesión para el próximo entrenamiento
+                $request->getSession()->remove('start_time_' . $workout->getId());
+
+                $this->addFlash('success', 'Entrenamiento finalizado. Duración: ' . $formattedDuration);
+                return $this->redirectToRoute('history');
+            } else {
+                // Si no está iniciado, iniciar el entrenamiento
+                $startTime = new \DateTime();
+                $request->getSession()->set('start_time_' . $workout->getId(), $startTime->format('Y-m-d H:i:s'));
+
+                $this->addFlash('success', 'Entrenamiento iniciado');
+                return $this->redirectToRoute('app_workout_show', ['id' => $workout->getId()]);
+            }
+        }
+
+
         return $this->render('workout/show.html.twig', [
             'workout' => $workout,
             'user' => $user,
+            'isStarted' => $isStarted,
+            'startTime' => $startTime,
         ]);
+
+        
+    }
+
+    private function formatDuration(int $durationInSeconds): string
+    {
+        $hours = floor($durationInSeconds / 3600);
+        $minutes = floor(($durationInSeconds % 3600) / 60);
+        $seconds = $durationInSeconds % 60;
+
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds); // Devuelve en formato hh:mm:ss
     }
 
     #[Route('/exercise/{id}', name: 'app_exercise_show', methods: ['GET'])]

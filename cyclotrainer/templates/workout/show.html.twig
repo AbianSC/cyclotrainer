@@ -31,6 +31,45 @@
         </tbody>
     </table>
 
+    {# Mostrar botones de inicio y fin #}
+    {% if isStarted %}
+        <div class="alert alert-info">
+            El entrenamiento está en progreso. ¡Sigue adelante!
+        </div>
+        <form method="post" action="{{ path('app_workout_show', {'id': workout.id}) }}">
+            <button type="submit" class="btn btn-danger">Finalizar Entrenamiento</button>
+        </form>
+        {# Mostrar temporizador que está en progreso #}
+        <div>
+            <p>Temporizador en progreso...</p>
+            <p id="timer"></p>
+            <script>
+                // Empezar a contar el tiempo desde la hora de inicio
+    let startTime = new Date("{{ startTime|date('Y-m-d H:i:s') }}").getTime();
+    let timerElement = document.getElementById("timer");
+
+    setInterval(function () {
+    let currentTime = new Date().getTime();
+    let elapsedTime = currentTime - startTime;
+
+    let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+    let minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+
+    timerElement.innerHTML = `${hours}:${minutes}:${seconds}`;
+    }, 1000);
+            </script>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            El entrenamiento no ha comenzado. Haz clic en "Iniciar" para empezar.
+        </div>
+        <form method="post" action="{{ path('app_workout_show', {'id': workout.id}) }}">
+            <button type="submit" class="btn btn-success">Iniciar Entrenamiento</button>
+        </form>
+    {% endif %}
+
+
     <a href="{{ path('dashboard_user') }}">back to dashboard</a>
 
     <a href="{{ path('app_workout_edit', {'id': workout.id}) }}">edit</a>

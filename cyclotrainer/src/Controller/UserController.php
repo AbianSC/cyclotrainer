@@ -4,17 +4,19 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\History;
 use App\Entity\Workout;
 use App\Entity\Exercise;
 use Doctrine\ORM\EntityManager;
 use App\Repository\UserRepository;
+use App\Repository\HistoryRepository;
 use App\Repository\ExerciseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Security;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -32,9 +34,13 @@ class UserController extends AbstractController
     }
 
     #[Route('/dash/history', name: 'history')]
-    public function history()
+    public function history(EntityManagerInterface $entityManager): Response
     {
-        return $this->render('user/history.html.twig');
+        $user = $this->getUser();
+        $histories = $entityManager->getRepository(History::class)->findBy(['user' => $user]);
+        return $this->render('user/history.html.twig', [
+            'histories' => $histories,
+        ]);
     }
 
     #[Route('/dash/workouts', name: 'workouts')]
