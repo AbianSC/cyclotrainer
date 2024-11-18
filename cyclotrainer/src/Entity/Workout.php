@@ -27,7 +27,7 @@ class Workout
     #[ORM\ManyToOne(inversedBy: 'workout')]
     private ?User $user = null;
 
-    #[ORM\OneToMany(targetEntity: WorkoutExercise::class, mappedBy: 'workout')]
+    #[ORM\OneToMany(targetEntity: WorkoutExercise::class, mappedBy: 'workout', cascade: ["persist"])]
     private Collection $workoutExercises;
 
     #[ORM\OneToMany(targetEntity: History::class, mappedBy: 'workout')]

@@ -74,18 +74,21 @@ class WorkoutController extends AbstractController
     #[Route('/{id}/edit', name: 'app_workout_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Workout $workout, EntityManagerInterface $entityManager): Response
     {
+        $referer = $request->headers->get('referer');
         $form = $this->createForm(WorkoutType::class, $workout);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $workout->setUpdateAt(new \DateTime());
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_workout_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('dashboard_user', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('workout/edit.html.twig', [
             'workout' => $workout,
-            'form' => $form,
+            'referer' => $referer,
+            'workoutForm' => $form->createView(),
         ]);
     }
 

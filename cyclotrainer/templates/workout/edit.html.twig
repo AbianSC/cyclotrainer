@@ -7,7 +7,7 @@
 
     {{ include('workout/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_workout_index') }}">back to list</a>
+    <a href="{{ referer ? referer : path('app_workout_index') }}">back to list</a>
 
     {{ include('workout/_delete_form.html.twig') }}
 {% endblock %}
