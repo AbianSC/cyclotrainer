@@ -60,11 +60,13 @@ class WorkoutController extends AbstractController
     }
 
     #[Route('/exercise/{id}', name: 'app_exercise_show', methods: ['GET'])]
-    public function showExercise(Exercise $exercise, Workout $workout): Response
+    public function showExercise(Exercise $exercise, Request $request): Response
     {
+        $referer = $request->headers->get('referer');
+
         return $this->render('workout/exercise.html.twig', [
             'exercise' => $exercise,
-            'workout' => $workout
+            'referer' => $referer,
         ]);
     }
 
@@ -95,7 +97,7 @@ class WorkoutController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_workout_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('dashboard_user', [], Response::HTTP_SEE_OTHER);
     }
 }
 

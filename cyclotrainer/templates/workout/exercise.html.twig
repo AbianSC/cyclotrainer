@@ -9,7 +9,7 @@
         <p><strong>Descripción:</strong> {{ exercise.description }}</p>
         <img src="{{ exercise.photo }}" alt="{{ exercise.name }}">
     </div>
-<a href="{{ path('app_workout_show', {id: workout.id}) }}">Back</a>
+<a href="{{ referer ? referer : path('app_workout_index') }}">Back</a>
     
 {% endblock %}
 

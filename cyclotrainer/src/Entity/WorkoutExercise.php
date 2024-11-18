@@ -24,9 +24,11 @@ class WorkoutExercise
     private ?int $sets = null;
 
     #[ORM\ManyToOne(inversedBy: 'workoutExercises')]
+    #[ORM\JoinColumn(name: 'workout_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Workout $workout = null;
 
     #[ORM\ManyToOne(inversedBy: 'workoutExercises')]
+    #[ORM\JoinColumn(name: 'exercise_id', referencedColumnName: 'id')]
     private ?Exercise $exercise = null;
 
     public function getId(): ?int
