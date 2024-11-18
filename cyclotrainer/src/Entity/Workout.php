@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WorkoutRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Workout
 {
     #[ORM\Id]
@@ -44,7 +45,9 @@ class Workout
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
-        $this->created_at = new \DateTimeImmutable();
+        if ($this->created_at === null) {
+            $this->created_at = new \DateTimeImmutable();
+        }
         $this->update_at = new \DateTime();
     }
 
@@ -76,12 +79,6 @@ class Workout
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
 
     public function getUpdateAt(): ?\DateTime
     {
@@ -106,6 +103,7 @@ class Workout
 
         return $this;
     }
+
 
     /**
      * @return Collection<int, WorkoutExercise>
