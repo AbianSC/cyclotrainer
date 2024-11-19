@@ -1,20 +1,77 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CycloTrainer{% endblock %}
+{% block title %}CycloTrainer - Exercises
+{% endblock %}
 
 {% block body %}
-    <h1 class="text-3xl md:text-6xl text-center text-black font-bold">EXERCISES</h1>
-    <div>
-        <ul>
-        {% for exercise in exercises %}
-            <li>
-                <a href="{{ path('exercise_detail' , { id: exercise.id }) }}">{{exercise.name}}</a>
-            </li>
-        {% endfor %}
-        </ul>
-    </div>
-    <div>
-		<a href="{{ path('dashboard_user')}}">Back to dashboard</a>
+
+<header class="bg-[#4A4A45] py-4 px-8 fixed top-0 left-0 w-full z-50">
+	<div
+		class="container mx-auto flex justify-between items-center">
+		<!-- Logo y Título -->
+		<a href="/" class="text-white text-3xl font-bold">CycloTrainer</a>
+
+		<!-- Menú de navegación en el header -->
+		<nav class="flex items-center space-x-6">
+			<ul class="hidden lg:flex space-x-6">
+				<li>
+					<a href="{{ path('exercises') }}" class="text-white font-bold hover:text-yellow-400">Ejercicios</a>
+				</li>
+				<li>
+					<a href="{{ path('workouts') }}" class="text-white font-bold hover:text-yellow-400">Entrenamientos</a>
+				</li>
+				<li>
+					<a href="{{ path('history') }}" class="text-white font-bold hover:text-yellow-400">Historial</a>
+				</li>
+			</ul>
+
+			<!-- Botón de Logout -->
+			<a href="{{ path('app_logout') }}" class="text-black bg-yellow-500 hover:bg-yellow-600 py-2 px-4 rounded-lg text-sm font-semibold transition duration-300 hidden lg:block">Logout</a>
+		</nav>
 	</div>
+
+</header>
+
+<!-- Contenido principal -->
+<main
+	class="pt-16 min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/pesas.png') }}');">
+	<!-- Título principal con el nombre del usuario -->
+
+
+	<h1 class="text-3xl md:text-6xl text-center text-white font-bold mb-8">Ejercicios</h1>
+
+	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
+		{% for exercise in exercises %}
+			<div
+				class="bg-yellow-500 text-black rounded-lg shadow-lg p-6 text-center hover:scale-105 transform transition duration-300">
+				<!-- Imagen del ejercicio (usando la URL de la base de datos) -->
+				<img
+				src="{{ exercise.photo }}" alt="{{ exercise.name }}" class="w-full h-40 object-cover rounded-lg mb-4">
+
+				<!-- Nombre del ejercicio -->
+				<h2 class="text-xl font-bold">{{ exercise.name }}</h2>
+
+				<!-- Enlace a la página de detalles del ejercicio -->
+				<a href="{{ path('exercise_detail', {id: exercise.id}) }}" class="text-yellow-700 hover:text-yellow-500 mt-3 inline-block">
+					View Details
+				</a>
+			</div>
+		{% endfor %}
+	</div>
+
+    <!-- Enlace para regresar al dashboard -->
+    <div class="mt-6 text-center">
+        <a href="{{ path('dashboard_user') }}" class="text-yellow-500 hover:text-yellow-400 font-semibold">
+            Back to dashboard
+        </a>
+    </div>
+
+</main>
 {% endblock %}
+
+
+
+
+
+
 

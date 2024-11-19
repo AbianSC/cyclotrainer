@@ -52,7 +52,7 @@ class UserController extends AbstractController
     #[Route('/dash/exercises', name: 'exercises')]
     public function exercises(ExerciseRepository $exerciseRepository): Response
     {
-        $exercises = $exerciseRepository->findAllNames();
+        $exercises = $exerciseRepository->findAll();
         return $this->render('user/exercises.html.twig', [
             'exercises' => $exercises,
         ]);

@@ -1,37 +1,59 @@
 {% extends 'base.html.twig' %}
-{% block title %}CycloTrainer
+
+{% block title %}CycloTrainer - Dashboard
 {% endblock %}
+
 {% block body %}
-	{% if app.user %}
-		<div class="mb-3">
-			You are logged in as
-			{{ app.user.userIdentifier }},
-			<a href="{{ path('app_logout') }}">Logout</a>
+	<header class="bg-[#4A4A45] py-4 px-8 fixed top-0 left-0 w-full z-50">
+		<div class="container mx-auto flex justify-between items-center">
+			<!-- Logo y Título -->
+			<a href="/" class="text-white text-3xl font-bold">CycloTrainer</a>
+
+			<!-- Menú de navegación en el header -->
+			<nav class="flex items-center space-x-6">
+				<ul class="hidden lg:flex space-x-6">
+					<li>
+						<a href="{{ path('exercises') }}" class="text-white font-bold hover:text-yellow-400">Ejercicios</a>
+					</li>
+					<li>
+						<a href="{{ path('workouts') }}" class="text-white font-bold hover:text-yellow-400">Entrenamientos</a>
+					</li>
+					<li>
+						<a href="{{ path('history') }}" class="text-white font-bold hover:text-yellow-400">Historial</a>
+					</li>
+				</ul>
+
+				<!-- Botón de Logout -->
+				<a href="{{ path('app_logout') }}" class="text-black bg-yellow-500 hover:bg-yellow-600 py-2 px-4 rounded-lg text-sm font-semibold transition duration-300 hidden lg:block">Logout</a>
+			</nav>
 		</div>
-	{% endif %}
-	<h1 class="text-3xl md:text-6xl text-center text-black font-bold">Welcome {{user.username}}</h1>
-	{% if is_granted('ROLE_ADMIN') %}
-		<div class="flex justify-center items-center min-h-screen">
-			<a href="{{ path('dashboard_admin') }}" class="inline-block px-6 py-2 text-lg font-medium text-white bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-yellow-500">ADMIN</a>
-		</div>
-	{% endif %}
-	<div>
-		<h1>My Workouts</h1>
-		<ul>
+
+	</header>
+
+	<!-- Contenido principal -->
+	<main class="pt-32 min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/pesas.png') }}');">
+		<!-- Título principal con el nombre del usuario -->
+		<h1 class="text-6xl text-center text-white font-bold mb-6">Bienvenido
+			{{ app.user.username }}</h1>
+
+		<!-- Workouts en cuadrícula centrada -->
+		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-8">
 			{% for workout in workouts %}
-				<li>
-					{{workout.name}} - <a href="{{ path('app_workout_show', {id: workout.id})}}">Ver detalles</a>
-				</li>
+				<div class="bg-yellow-500 text-black rounded-lg shadow-lg p-8 mt-8 text-center hover:scale-105 transform transition duration-300">
+					<h2 class="text-xl font-bold">{{ workout.name }}</h2>
+					<a href="{{ path('app_workout_show', {id: workout.id}) }}" class="text-yellow-700 hover:text-black mt-3 inline-block">
+						Ver detalles
+					</a>
+				</div>
 			{% endfor %}
-		</ul>
-	</div>
-	<div>
-		<a href="{{ path('history')}}">HISTORY</a>
-	</div>
-	<div>
-		<a href="{{ path('workouts')}}">WORKOUTS</a>
-	</div>
-	<div>
-		<a href="{{ path('exercises')}}">EXERCISES</a>
-	</div>
+		</div>
+
+
+	</main>
 {% endblock %}
+
+
+
+
+
+

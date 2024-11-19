@@ -23,7 +23,7 @@
 			<div
 				class="container mx-auto flex justify-between items-center">
 				<!-- Logo y título -->
-				<a href="/" class="text-white text-2xl font-bold">CycloTrainer</a>
+				<a href="/" class="text-white text-3xl font-bold">CycloTrainer</a>
 
 				<!-- Botones Login y Register (Solo en home.html.twig, no aquí) -->
 				{% block header_buttons %}{% endblock %}
@@ -31,20 +31,32 @@
 		</header>
 
 		<main
-			class="pt-4">
+			class="pt-4 min-h-screen">
 			<!-- Añadimos padding-top para que el contenido no se sobreponga al header -->
 			{% block body %}
 				<!-- Contenido principal de la página -->
 			{% endblock %}
 		</main>
 
-		<footer class="bg-[#4A4A45] py-4 text-center text-white">
-			&copy;
-			{{ "now"|date("Y") }}
-			CycloTrainer. Todos los derechos reservados.
+		<footer
+			class="bg-[#4A4A45] py-4 text-center text-white mt-12">
+			<!-- Añadido margen superior para espacio entre el contenido y el footer -->
+			<div class="mt-6 text-center">
+				<a href="{{ path('history') }}" class="text-yellow-500 hover:text-yellow-400">FAQ</a>
+				|
+				<a href="{{ path('workouts') }}" class="text-yellow-500 hover:text-yellow-400">About Us</a>
+				|
+				<a href="{{ path('exercises') }}" class="text-yellow-500 hover:text-yellow-400">Contact</a>
+			</div>
+			<div class="mt-4">
+				&copy;
+				{{ "now"|date("Y") }}
+				CycloTrainer. Todos los derechos reservados.
+			</div>
 		</footer>
 	</body>
 </html>
+
 
 
 
