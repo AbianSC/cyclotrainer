@@ -1,20 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Register
+{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+	<div
+		class="flex justify-center items-center min-h-screen pt-4">
+		<!-- Contenedor con fondo blanco y algo de transparencia -->
+		<div
+			class="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg w-full max-w-md">
+			<!-- Título de registro -->
+			<h2 class="text-center text-gray-700 text-2xl font-semibold mb-6">Regístrate</h2>
 
-    {{ form_errors(registrationForm) }}
+			<!-- Formulario de registro -->
+			{{ form_errors(registrationForm) }}
+			{{ form_start(registrationForm) }}
+			<div class="mb-5">
+				{{ form_label(registrationForm.username, 'Usuario', {'label_attr': {'class': 'text-gray-700'}}) }}
+				{{ form_widget(registrationForm.username, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5'}}) }}
+			</div>
+			<div class="mb-5">
+				{{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'text-gray-700'}}) }}
+				{{ form_widget(registrationForm.email, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5'}}) }}
+			</div>
+			<div class="mb-5">
+				{{ form_label(registrationForm.plainPassword, 'Contraseña', {'label_attr': {'class': 'text-gray-700'}}) }}
+				{{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5'}}) }}
+			</div>
+			<div class="mb-5">
+				{{ form_label(registrationForm.agreeTerms, 'Aceptar términos', {'label_attr': {'class': 'text-gray-700'}}) }}
+				{{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5'}}) }}
+			</div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username)}}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+			<!-- Botón de registro -->
+			<button type="submit" class="text-black bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-6 py-3 text-center">
+				Regístrate
+			</button>
+			{{ form_end(registrationForm) }}
+		</div>
+	</div>
 {% endblock %}
+
+

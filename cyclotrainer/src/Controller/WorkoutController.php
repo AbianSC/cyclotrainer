@@ -88,7 +88,7 @@ class WorkoutController extends AbstractController
             // Guardar el historial del entrenamiento
             $trainingHistory = new History();
             $trainingHistory->setWorkout($workout);
-            $trainingHistory->setWorkoutName($workout->getName());   // Crea el 
+            $trainingHistory->setWorkoutName($workout->getName());   // Crear el nombre del historial (el mismo que el de la plantilla)
             $trainingHistory->setDuration($formattedDuration);
             $trainingHistory->setDateWorkout($endTime);  // La fecha de finalización
             $trainingHistory->setUser($user);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 	<head>
 		<meta charset="UTF-8">
 		<title>
@@ -17,17 +17,37 @@
 			{{ importmap() }}
 		{% endblock %}
 	</head>
-	<body>
-		<header>
-			<h1>CYCLOTRAINER</h1>
+
+	<body class="bg-cover bg-center bg-gray-100" style="background-image: url('{{ asset('images/pesas.png') }}');">
+		<header class="bg-[#4A4A45] py-4 px-8 fixed top-0 left-0 w-full z-50">
+			<div
+				class="container mx-auto flex justify-between items-center">
+				<!-- Logo y título -->
+				<a href="/" class="text-white text-2xl font-bold">CycloTrainer</a>
+
+				<!-- Botones Login y Register (Solo en home.html.twig, no aquí) -->
+				{% block header_buttons %}{% endblock %}
+			</div>
 		</header>
-		{% block body %}
-			<main></main>
-		{% endblock %}
-		<footer>
+
+		<main
+			class="pt-4">
+			<!-- Añadimos padding-top para que el contenido no se sobreponga al header -->
+			{% block body %}
+				<!-- Contenido principal de la página -->
+			{% endblock %}
+		</main>
+
+		<footer class="bg-[#4A4A45] py-4 text-center text-white">
 			&copy;
-			{{"now"|date("Y")}}
+			{{ "now"|date("Y") }}
 			CycloTrainer. Todos los derechos reservados.
 		</footer>
 	</body>
 </html>
+
+
+
+
+
+
