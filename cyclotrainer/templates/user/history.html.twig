@@ -17,7 +17,7 @@
     <tbody>
       {% for history in histories %}
         <tr>
-          <td>{{ history.workout.name }}</td>
+          <td>{{ history.workoutName }}</td>
           <td>{{ history.duration }}</td>
           <td>{{ history.dateWorkout ? history.dateWorkout|date('Y-m-d H:i:s') : '' }}</td>
         </tr>

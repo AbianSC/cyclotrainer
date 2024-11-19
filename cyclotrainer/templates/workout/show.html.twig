@@ -37,9 +37,9 @@
             El entrenamiento está en progreso. ¡Sigue adelante!
         </div>
         <form method="post" action="{{ path('app_workout_show', {'id': workout.id}) }}">
+            <input type="hidden" name="action" value="end">
             <button type="submit" class="btn btn-danger">Finalizar Entrenamiento</button>
         </form>
-        {# Mostrar temporizador que está en progreso #}
         <div>
             <p>Temporizador en progreso...</p>
             <p id="timer"></p>
@@ -65,9 +65,11 @@
             El entrenamiento no ha comenzado. Haz clic en "Iniciar" para empezar.
         </div>
         <form method="post" action="{{ path('app_workout_show', {'id': workout.id}) }}">
+            <input type="hidden" name="action" value="start">
             <button type="submit" class="btn btn-success">Iniciar Entrenamiento</button>
         </form>
     {% endif %}
+
 
 
     <a href="{{ path('dashboard_user') }}">back to dashboard</a>

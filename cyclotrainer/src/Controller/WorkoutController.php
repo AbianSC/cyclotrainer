@@ -53,63 +53,73 @@ class WorkoutController extends AbstractController
 
     #[Route('/{id}', name: 'app_workout_show', methods: ['GET', 'POST'])]
     public function show(Workout $workout, Request $request, EntityManagerInterface $entityManager): Response
-    {   
-        
+    {
         $user = $this->getUser();
         // Verificar si el entrenamiento ha comenzado (verificamos la sesión)
         $startTime = $request->getSession()->get('start_time_' . $workout->getId());
         $isStarted = $startTime !== null;
 
-        if ($request->isMethod('POST')) {
-            if ($isStarted) {
-                // Si el entrenamiento ya está en progreso, finalizarlo
-                $endTime = new \DateTime();
-                $startTime = new \DateTime($startTime);
+        // Obtener el valor de la acción desde el formulario
+        $action = $request->request->get('action'); // Obtener la acción
 
-                // Calcular la duración como un DateInterval
-                $duration = $startTime->diff($endTime);
-
-                // Convertir a segundos
-                $durationInSeconds = $duration->h * 3600 + $duration->i * 60 + $duration->s;
-
-                // Formatear la duración a hh:mm:ss
-                $formattedDuration = $this->formatDuration($durationInSeconds);
-
-                // Guardar el historial del entrenamiento
-                $trainingHistory = new History();
-                $trainingHistory->setWorkout($workout);
-                $trainingHistory->setDuration($formattedDuration);
-                $trainingHistory->setDateWorkout($endTime);  // La fecha de finalización
-                $trainingHistory->setUser($user);
-
-                // Guardar el historial en la base de datos
-                $entityManager->persist($trainingHistory);
-                $entityManager->flush();
-
-                // Limpiar la sesión para el próximo entrenamiento
-                $request->getSession()->remove('start_time_' . $workout->getId());
-
-                $this->addFlash('success', 'Entrenamiento finalizado. Duración: ' . $formattedDuration);
-                return $this->redirectToRoute('history');
-            } else {
-                // Si no está iniciado, iniciar el entrenamiento
-                $startTime = new \DateTime();
-                $request->getSession()->set('start_time_' . $workout->getId(), $startTime->format('Y-m-d H:i:s'));
-
-                $this->addFlash('success', 'Entrenamiento iniciado');
-                return $this->redirectToRoute('app_workout_show', ['id' => $workout->getId()]);
-            }
+        // Acciones diferentes basadas en el valor de "action"
+        if ($action === 'start') {
+            // Si no está iniciado, iniciar el entrenamiento
+            $startTime = new \DateTime();
+            $request->getSession()->set('start_time_' . $workout->getId(), $startTime->format('Y-m-d H:i:s'));
+            $this->addFlash('success', 'Entrenamiento iniciado');
+            return $this->redirectToRoute('app_workout_show', ['id' => $workout->getId()]);
         }
 
+        if ($action === 'end' && $isStarted) {
+            // Si el entrenamiento ya está en progreso, finalizarlo
+            $endTime = new \DateTime();
+            $startTime = new \DateTime($startTime);
 
+            // Calcular la duración como un DateInterval
+            $duration = $startTime->diff($endTime);
+
+            // Convertir a segundos
+            $durationInSeconds = $duration->h * 3600 + $duration->i * 60 + $duration->s;
+
+            // Formatear la duración a hh:mm:ss
+            $formattedDuration = $this->formatDuration($durationInSeconds);
+
+            // Guardar el historial del entrenamiento
+            $trainingHistory = new History();
+            $trainingHistory->setWorkout($workout);
+            $trainingHistory->setWorkoutName($workout->getName());   // Crea el 
+            $trainingHistory->setDuration($formattedDuration);
+            $trainingHistory->setDateWorkout($endTime);  // La fecha de finalización
+            $trainingHistory->setUser($user);
+
+            // Guardar el historial en la base de datos
+            $entityManager->persist($trainingHistory);
+            $entityManager->flush();
+
+            // Limpiar la sesión para el próximo entrenamiento
+            $request->getSession()->remove('start_time_' . $workout->getId());
+
+            $this->addFlash('success', 'Entrenamiento finalizado. Duración: ' . $formattedDuration);
+            return $this->redirectToRoute('history');
+        }
+
+        if ($action === 'delete') {
+            // Eliminar el entrenamiento
+            $entityManager->remove($workout);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Entrenamiento eliminado');
+            return $this->redirectToRoute('dashboard_user');
+        }
+
+        // Renderizar la vista con los datos del entrenamiento
         return $this->render('workout/show.html.twig', [
             'workout' => $workout,
             'user' => $user,
             'isStarted' => $isStarted,
             'startTime' => $startTime,
         ]);
-
-        
     }
 
     private function formatDuration(int $durationInSeconds): string
@@ -155,15 +165,31 @@ class WorkoutController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_workout_delete', methods: ['POST'])]
-    public function delete(Request $request, Workout $workout, EntityManagerInterface $entityManager): Response
+    public function delete(Workout $workout, EntityManagerInterface $entityManager, Request $request): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$workout->getId(), $request->request->get('_token'))) {
+        // Asegúrate de que la acción de eliminación está siendo realizada por una solicitud POST
+        if ($this->isCsrfTokenValid('delete' . $workout->getId(), $request->request->get('_token'))) {
+
+            // Desvincula los registros de History del Workout
+            foreach ($workout->getHistory() as $history) {
+                $history->setWorkout(null); // Esto desvincula el workout de la tabla history
+            }
+
+            // Persistir los cambios (solo para desvincular el workout de History)
+            $entityManager->flush();
+
+            // Elimina el workout (sin eliminar el historial)
             $entityManager->remove($workout);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Entrenamiento eliminado, pero el historial se mantiene.');
+            return $this->redirectToRoute('dashboard_user');
         }
 
-        return $this->redirectToRoute('dashboard_user', [], Response::HTTP_SEE_OTHER);
+        // Si no es una solicitud válida, redirige al usuario
+        return $this->redirectToRoute('dashboard_user');
     }
+
 }
 
 

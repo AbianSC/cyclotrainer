@@ -22,10 +22,14 @@ class History
     private ?\DateTime $dateWorkout = null;
 
     #[ORM\ManyToOne(inversedBy: 'history')]
+    #[ORM\JoinColumn(name: 'workout_id', referencedColumnName: 'id', onDelete: 'SET NULL', nullable: true)]
     private ?Workout $workout = null;
 
     #[ORM\ManyToOne(inversedBy: 'histories')]
     private ?User $user = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $workoutName = null;
 
     public function getId(): ?int
     {
@@ -76,6 +80,18 @@ class History
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getWorkoutName(): ?string
+    {
+        return $this->workoutName;
+    }
+
+    public function setWorkoutName(string $workoutName): static
+    {
+        $this->workoutName = $workoutName;
 
         return $this;
     }
