@@ -1,6 +1,7 @@
-{# Formulario de eliminación del entrenamiento #}
-<form method="post" action="{{ path('app_workout_show', {'id': workout.id}) }}">
-	<input type="hidden" name="action" value="delete">
-	<button type="submit" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-6 py-3">Delete</button>
-</form>
+{% if app.request.attributes.get('_route') == 'app_workout_show' %}
+    <form method="post" action="{{ path('app_workout_show', {'id': workout.id}) }}">
+        <input type="hidden" name="action" value="delete">
+        <button type="submit" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-6 py-3">Delete</button>
+    </form>
+{% endif %}
 

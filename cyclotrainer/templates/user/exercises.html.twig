@@ -6,29 +6,30 @@
 {% block body %}
 
 <header class="bg-[#4A4A45] py-4 px-8 fixed top-0 left-0 w-full z-50">
-	<div
-		class="container mx-auto flex justify-between items-center">
-		<!-- Logo y Título -->
-		<a href="/" class="text-white text-3xl font-bold">CycloTrainer</a>
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo y Título -->
+        <a href="/" class="text-white text-3xl font-bold">CycloTrainer</a>
 
-		<!-- Menú de navegación en el header -->
-		<nav class="flex items-center space-x-6">
-			<ul class="hidden lg:flex space-x-6">
-				<li>
-					<a href="{{ path('dashboard_user') }}" class="text-white font-bold hover:text-yellow-400">
-						<img src="{{ asset('images/icons8-volver-30.png')}}" alt="Back Icon" class="w-6 h-6 mr-2">
-						Back
-					</a>
-				</li>
-			</ul>
-		</nav>
-	</div>
-
+        <!-- Menú de navegación en el header -->
+        <nav class="flex items-center space-x-6">
+            <ul class="hidden lg:flex space-x-6">
+                <li>
+                    <a href="{{ path('exercises') }}" class="text-white font-bold hover:text-yellow-400">Ejercicios</a>
+                </li>
+                <li>
+                    <a href="{{ path('create_workout') }}" class="text-white font-bold hover:text-yellow-400">Entrenamientos</a>
+                </li>
+                <li>
+                    <a href="{{ path('history') }}" class="text-white font-bold hover:text-yellow-400">Historial</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
 <!-- Contenido principal -->
 <main
-	class="pt-16 min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/pesas.png') }}');">
+	class="pt-12 min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/pesas.png') }}');">
 	<!-- Título principal con el nombre del usuario -->
 
 	<div class="flex justify-center items-center">
@@ -47,7 +48,7 @@
 				<h2 class="text-xl font-bold">{{ exercise.name }}</h2>
 
 				<!-- Enlace a la página de detalles del ejercicio -->
-				<a href="{{ path('exercise_detail', {id: exercise.id}) }}" class="text-yellow-700 hover:text-yellow-500 mt-3 inline-block">
+				<a href="{{ path('exercise_detail', {id: exercise.id}) }}" class="text-yellow-700 hover:text-black mt-3 inline-block">
 					Ver Detalles
 				</a>
 			</div>

@@ -5,14 +5,20 @@
 {% block body %}
 <header class="bg-[#4A4A45] py-4 px-8 fixed top-0 left-0 w-full z-50">
     <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo y Título -->
         <a href="/" class="text-white text-3xl font-bold">CycloTrainer</a>
+
+        <!-- Menú de navegación en el header -->
         <nav class="flex items-center space-x-6">
             <ul class="hidden lg:flex space-x-6">
                 <li>
-                    <a href="{{ path('dashboard_user') }}" class="text-white font-bold hover:text-yellow-400">
-                        <img src="{{ asset('images/icons8-volver-30.png') }}" alt="Back Icon" class="w-6 h-6 mr-2">
-                        Back
-                    </a>
+                    <a href="{{ path('exercises') }}" class="text-white font-bold hover:text-yellow-400">Ejercicios</a>
+                </li>
+                <li>
+                    <a href="{{ path('create_workout') }}" class="text-white font-bold hover:text-yellow-400">Entrenamientos</a>
+                </li>
+                <li>
+                    <a href="{{ path('history') }}" class="text-white font-bold hover:text-yellow-400">Historial</a>
                 </li>
             </ul>
         </nav>

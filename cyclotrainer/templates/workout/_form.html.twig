@@ -10,10 +10,13 @@
         <nav class="flex items-center space-x-6">
             <ul class="hidden lg:flex space-x-6">
                 <li>
-                    <a href="{{ path('dashboard_user') }}" class="text-white font-bold hover:text-yellow-400">
-                        <img src="{{ asset('images/icons8-volver-30.png')}}" alt="Back Icon" class="w-6 h-6 mr-2">
-                        Back
-                    </a>
+                    <a href="{{ path('exercises') }}" class="text-white font-bold hover:text-yellow-400">Ejercicios</a>
+                </li>
+                <li>
+                    <a href="{{ path('create_workout') }}" class="text-white font-bold hover:text-yellow-400">Entrenamientos</a>
+                </li>
+                <li>
+                    <a href="{{ path('history') }}" class="text-white font-bold hover:text-yellow-400">Historial</a>
                 </li>
             </ul>
         </nav>
@@ -21,7 +24,7 @@
 </header>
 
 <main class="pt-2">
-    <div class="flex justify-center items-center min-h-screen pt-0">
+    <div class="flex justify-center items-center min-h-screen pt-6">
         <!-- Contenedor principal con fondo blanco -->
         <div class="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg w-full max-w-3xl">
             <!-- Título -->

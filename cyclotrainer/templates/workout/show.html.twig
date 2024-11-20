@@ -5,26 +5,28 @@
 {% block body %}
 
 <header class="bg-[#4A4A45] py-4 px-8 fixed top-0 left-0 w-full z-50">
-	<div
-		class="container mx-auto flex justify-between items-center">
-		<!-- Logo y Título -->
-		<a href="/" class="text-white text-3xl font-bold">CycloTrainer</a>
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo y Título -->
+        <a href="/" class="text-white text-3xl font-bold">CycloTrainer</a>
 
-		<!-- Menú de navegación en el header -->
-		<nav class="flex items-center space-x-6">
-			<ul class="hidden lg:flex space-x-6">
-				<li>
-					<a href="{{ path('dashboard_user') }}" class="text-white font-bold hover:text-yellow-400">
-						<img src="{{ asset('images/icons8-volver-30.png')}}" alt="Back Icon" class="w-6 h-6 mr-2">
-						Back
-					</a>
-				</li>
-			</ul>
-		</nav>
-	</div>
+        <!-- Menú de navegación en el header -->
+        <nav class="flex items-center space-x-6">
+            <ul class="hidden lg:flex space-x-6">
+                <li>
+                    <a href="{{ path('exercises') }}" class="text-white font-bold hover:text-yellow-400">Ejercicios</a>
+                </li>
+                <li>
+                    <a href="{{ path('create_workout') }}" class="text-white font-bold hover:text-yellow-400">Entrenamientos</a>
+                </li>
+                <li>
+                    <a href="{{ path('history') }}" class="text-white font-bold hover:text-yellow-400">Historial</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
-<main class="flex justify-center items-center min-h-screen pt-16">
+<main class="flex justify-center items-center min-h-screen pt-14">
     <div class="bg-white bg-opacity-80 p-8 m-8 rounded-lg shadow-lg w-full max-w-4xl">
         <!-- Título -->
         <h1 class="text-center text-gray-700 text-2xl font-bold mb-6">{{ workout.name }}</h1>
@@ -71,65 +73,57 @@
         </table>
 
         <!-- Botones para Iniciar/Finalizar -->
-        <div class="mb-6">
-            {% if isStarted %}
-                <div class="bg-blue-100 border border-blue-500 text-blue-700 px-4 py-3 rounded mb-4">
-                    El entrenamiento está en progreso. ¡Sigue adelante!
-                </div>
+        {% if isStarted %}
+            <div class="bg-blue-100 border border-blue-500 text-blue-700 px-4 py-3 rounded mb-4">
+                El entrenamiento está en progreso. ¡Sigue adelante!
+            </div>
+            <div class="flex justify-end items-center">
                 <form method="post" action="{{ path('app_workout_show', {'id': workout.id}) }}">
                     <input type="hidden" name="action" value="end">
-                    <button type="submit" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-6 py-3">
+                    <button type="submit" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-6 py-3 mt-4">
                         Finalizar Entrenamiento
                     </button>
                 </form>
-                <div class="mt-4">
-                    <p class="text-gray-700">Temporizador en progreso:</p>
-                    <p id="timer" class="text-2xl font-bold text-gray-800"></p>
-                    <script>
-                        // Empezar a contar el tiempo desde la hora de inicio
-                        let startTime = new Date("{{ startTime|date('Y-m-d H:i:s') }}").getTime();
-                        let timerElement = document.getElementById("timer");
+            </div>
+            <div class="mt-4">
+                <p class="text-gray-700">Temporizador en progreso:</p>
+                <p id="timer" class="text-2xl font-bold text-gray-800"></p>
+                <script>
+                    let startTime = new Date("{{ startTime|date('Y-m-d H:i:s') }}").getTime();
+                    let timerElement = document.getElementById("timer");
 
-                        setInterval(function () {
-                            let currentTime = new Date().getTime();
-                            let elapsedTime = currentTime - startTime;
+                    setInterval(function () {
+                        let currentTime = new Date().getTime();
+                        let elapsedTime = currentTime - startTime;
 
-                            let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
-                            let minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
-                            let seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+                        let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+                        let minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+                        let seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
 
-                            hours = String(hours).padStart(2, '0');
-                            minutes = String(minutes).padStart(2, '0');
-                            seconds = String(seconds).padStart(2, '0');
+                        hours = String(hours).padStart(2, '0');
+                        minutes = String(minutes).padStart(2, '0');
+                        seconds = String(seconds).padStart(2, '0');
 
-                            timerElement.innerHTML = `${hours}:${minutes}:${seconds}`;
-                        }, 1000);
-                    </script>
-                </div>
-            {% else %}
-                <div class="bg-yellow-100 border border-yellow-500 text-yellow-700 px-4 py-3 rounded mb-4">
-                    El entrenamiento no ha comenzado. Haz clic en "Iniciar" para empezar.
-                </div>
+                        timerElement.innerHTML = `${hours}:${minutes}:${seconds}`;
+                    }, 1000);
+                </script>
+            </div>
+        {% else %}
+            <div class="flex justify-end items-center gap-4">
                 <form method="post" action="{{ path('app_workout_show', {'id': workout.id}) }}">
                     <input type="hidden" name="action" value="start">
                     <button type="submit" class="text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-6 py-3">
                         Iniciar Entrenamiento
                     </button>
                 </form>
-            {% endif %}
-        </div>
-
-        <!-- Botones de Acción -->
-        {% if not isStarted %}
-            <div class="flex justify-between items-center">
-                <a href="{{ path('app_workout_edit', {'id': workout.id}) }}"
-                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-3">
+                <a href="{{ path('app_workout_edit', {'id': workout.id}) }}" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-3">
                     Editar Entrenamiento
                 </a>
-
                 {{ include('workout/_delete_form.html.twig') }}
             </div>
         {% endif %}
     </div>
 </main>
 {% endblock %}
+
+

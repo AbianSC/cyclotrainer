@@ -23,15 +23,22 @@
 					</li>
 				</ul>
 
+				<a href="{{ path('app_logout') }}" class="hidden lg:block">
+					<img src="{{ asset('images/icons8-perfil-del-usuario-40.png') }}" alt="Logout" class="w-8 h-8 hover:opacity-80 transition duration-300">
+				</a>
+
 				<!-- Botón de Logout -->
-				<a href="{{ path('app_logout') }}" class="text-black bg-yellow-500 hover:bg-yellow-600 py-2 px-4 rounded-lg text-sm font-semibold transition duration-300 hidden lg:block">Logout</a>
+				<a href="{{ path('app_logout') }}" class="hidden lg:block">
+					<img src="{{ asset('images/icons8-puerta-abierta-30.png') }}" alt="Logout" class="w-8 h-8 hover:opacity-80 transition duration-300">
+				</a>
+
 			</nav>
 		</div>
 
 	</header>
 
 	<!-- Contenido principal -->
-	<main class="pt-32 min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/pesas.png') }}');">
+	<main class="pt-32 min-h-screen bg-cover bg-center">
 		<!-- Título principal con el nombre del usuario -->
 		<h1 class="text-6xl text-center text-white font-bold mb-6">Bienvenido
 			{{ app.user.username }}</h1>
