@@ -1,31 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}History
-{% endblock %}
+{% block title %}Historial de Entrenamientos{% endblock %}
 
 {% block body %}
-	<h1>Historial de Entrenamiento</h1>
+<header class="bg-[#4A4A45] py-4 px-8 fixed top-0 left-0 w-full z-50">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-white text-3xl font-bold">CycloTrainer</a>
+        <nav class="flex items-center space-x-6">
+            <ul class="hidden lg:flex space-x-6">
+                <li>
+                    <a href="{{ path('dashboard_user') }}" class="text-white font-bold hover:text-yellow-400">
+                        <img src="{{ asset('images/icons8-volver-30.png') }}" alt="Back Icon" class="w-6 h-6 mr-2">
+                        Back
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Entrenamiento</th>
-        <th>Duración</th>
-        <th>Fecha de Entrenamiento</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for history in histories %}
-        <tr>
-          <td>{{ history.workoutName }}</td>
-          <td>{{ history.duration }}</td>
-          <td>{{ history.dateWorkout ? history.dateWorkout|date('Y-m-d H:i:s') : '' }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<main class="flex justify-center items-center min-h-screen pt-16">
+    <div class="bg-white bg-opacity-80 p-8 m-8 rounded-lg shadow-lg w-full max-w-5xl">
+        <h1 class="text-center text-gray-700 text-2xl font-bold mb-6">Historial de Entrenamientos</h1>
 
-	<a href="{{ path('dashboard_user') }}">Volver a la lista de entrenamientos</a>
+        <!-- Tabla estilizada -->
+        <table class="table-auto w-full border-collapse border border-gray-300">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="border border-gray-300 px-4 py-2 text-gray-700">Entrenamiento</th>
+                    <th class="border border-gray-300 px-4 py-2 text-gray-700">Duración</th>
+                    <th class="border border-gray-300 px-4 py-2 text-gray-700">Fecha de Entrenamiento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for history in histories %}
+                    <tr class="hover:bg-amarillo text-center">
+                        <td class="border border-gray-300 px-4 py-2 text-gray-700 font-semibold">{{ history.workoutName }}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-gray-700">{{ history.duration }}</td>
+                        <td class="border border-gray-300 px-4 py-2 text-gray-700">
+                            {{ history.dateWorkout ? history.dateWorkout|date('Y-m-d H:i:s') : '' }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="border border-gray-300 px-4 py-2 text-center text-gray-500">
+                            No hay entrenamientos en el historial.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</main>
 {% endblock %}
 
 

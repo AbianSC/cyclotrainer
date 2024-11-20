@@ -24,8 +24,8 @@
 	</div>
 </header>
 
-<main class="flex justify-center items-center min-h-screen pt-20">
-    <div class="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg w-full max-w-4xl">
+<main class="flex justify-center items-center min-h-screen pt-16">
+    <div class="bg-white bg-opacity-80 p-8 m-8 rounded-lg shadow-lg w-full max-w-4xl">
         <!-- Título -->
         <h1 class="text-center text-gray-700 text-2xl font-bold mb-6">{{ workout.name }}</h1>
 
@@ -112,7 +112,7 @@
                 </div>
                 <form method="post" action="{{ path('app_workout_show', {'id': workout.id}) }}">
                     <input type="hidden" name="action" value="start">
-                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-6 py-3">
+                    <button type="submit" class="text-white bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-6 py-3">
                         Iniciar Entrenamiento
                     </button>
                 </form>

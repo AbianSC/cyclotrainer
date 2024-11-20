@@ -44,9 +44,11 @@
 				type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 				<!-- Botón de submit (Login) -->
-				<button class="text-black bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-6 py-3 text-center" type="submit">
-					Iniciar sesión
-				</button>
+				<div class="flex justify-center items-center">
+					<button class="text-black bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm w-full sm:w-auto px-6 py-3 text-center" type="submit">
+						Iniciar sesión
+					</button>
+				</div>
 			</form>
 		</div>
 	</div>
