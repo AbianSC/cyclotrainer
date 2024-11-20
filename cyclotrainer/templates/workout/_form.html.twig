@@ -1,40 +1,108 @@
-{{ form_start(workoutForm) }}
+{% block title %}Crear Nuevo Entrenamiento{% endblock %}
 
-{{ form_row(workoutForm.name, { 'label': 'Workout Name' }) }}
+{% block body %}
+<header class="bg-[#4A4A45] py-4 px-8 fixed top-0 left-0 w-full z-50">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo y Título -->
+        <a href="/" class="text-white text-3xl font-bold">CycloTrainer</a>
 
-<h2>Exercises</h2>
-<div id="workout-exercises" data-prototype="{{ form_widget(workoutForm.workoutExercises.vars.prototype)|e('html_attr') }}">
-	{% for workoutExercise in workoutForm.workoutExercises %}
-		<div class="workout-exercise-item">
-			{{ form_row(workoutExercise.exercise, { 'label': 'Exercise' }) }}
-			{{ form_row(workoutExercise.reps, { 'label': 'Reps' }) }}
-			{{ form_row(workoutExercise.weight, { 'label': 'Weight' }) }}
-			{{ form_row(workoutExercise.sets, { 'label': 'Sets' }) }}
+        <!-- Menú de navegación en el header -->
+        <nav class="flex items-center space-x-6">
+            <ul class="hidden lg:flex space-x-6">
+                <li>
+                    <a href="{{ path('dashboard_user') }}" class="text-white font-bold hover:text-yellow-400">
+                        <img src="{{ asset('images/icons8-volver-30.png')}}" alt="Back Icon" class="w-6 h-6 mr-2">
+                        Back
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
-			<button type="button" class="remove-exercise-btn">Remove Exercise</button>
-		</div>
-	{% endfor %}
-</div>
+<main class="pt-2">
+    <div class="flex justify-center items-center min-h-screen pt-0">
+        <!-- Contenedor principal con fondo blanco -->
+        <div class="bg-white bg-opacity-80 p-8 rounded-lg shadow-lg w-full max-w-3xl">
+            <!-- Título -->
+            <h2 class="text-center text-gray-700 text-2xl font-semibold mb-6">Crea tu Nuevo Entrenamiento</h2>
 
-<button type="button" id="add-exercise-btn">Add Exercise</button>
-<button type="submit" class="btn btn-primary">Save Workout</button>
+            <!-- Formulario -->
+            {{ form_start(workoutForm) }}
 
-{{ form_end(workoutForm) }}
+            <!-- Nombre del entrenamiento -->
+            <div class="mb-5">
+                {{ form_label(workoutForm.name, 'Nombre del Entrenamiento', { 'label_attr': { 'class': 'block mb-2 text-sm font-medium text-gray-700' } }) }}
+                {{ form_widget(workoutForm.name, { 'attr': { 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Introduce el nombre del entrenamiento' } }) }}
+                {{ form_errors(workoutForm.name) }}
+            </div>
+
+            <!-- Ejercicios -->
+            <h3 class="text-lg font-medium text-gray-700 mb-4">Ejercicios</h3>
+            <div id="workout-exercises"  data-prototype="{{ form_widget(workoutForm.workoutExercises.vars.prototype)|e('html_attr') }}">
+                {% for workoutExercise in workoutForm.workoutExercises %}
+                    <div class="workout-exercise-item bg-gray-100 p-4 mb-4 rounded-lg shadow">
+                        <div class="mb-3">
+                            {{ form_label(workoutExercise.exercise, 'Ejercicio', { 'label_attr': { 'class': 'block mb-2 text-sm font-medium text-gray-700' } }) }}
+                            {{ form_widget(workoutExercise.exercise, { 'attr': { 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Selecciona un ejercicio' } }) }}
+                            {{ form_errors(workoutExercise.exercise) }}
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                {{ form_label(workoutExercise.reps, 'Repeticiones', { 'label_attr': { 'class': 'block mb-2 text-sm font-medium text-gray-700' } }) }}
+                                {{ form_widget(workoutExercise.reps, { 'attr': { 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Número de repeticiones' } }) }}
+                                {{ form_errors(workoutExercise.reps) }}
+                            </div>
+                            <div>
+                                {{ form_label(workoutExercise.sets, 'Series', { 'label_attr': { 'class': 'block mb-2 text-sm font-medium text-gray-700' } }) }}
+                                {{ form_widget(workoutExercise.sets, { 'attr': { 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Número de series' } }) }}
+                                {{ form_errors(workoutExercise.sets) }}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(workoutExercise.weight, 'Peso', { 'label_attr': { 'class': 'block mb-2 text-sm font-medium text-gray-700' } }) }}
+                            {{ form_widget(workoutExercise.weight, { 'attr': { 'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5', 'placeholder': 'Peso en kg' } }) }}
+                            {{ form_errors(workoutExercise.weight) }}
+                        </div>
+                        <button type="button" class="remove-exercise-btn text-red-600 hover:text-red-800 text-sm mt-2">Eliminar Ejercicio</button>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Botones -->
+            <div class="flex justify-between items-center mt-6">
+                <button type="button" id="add-exercise-btn" class="text-black bg-yellow-500 hover:bg-yellow-600 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-6 py-3">
+                    Agregar Ejercicio
+                </button>
+                <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-3">
+                    Guardar Entrenamiento
+                </button>
+            </div>
+
+            {{ form_end(workoutForm) }}
+        </div>
+    </div>
+</main>
+
 
 <script>
-	document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
         const workoutExercisesContainer = document.getElementById('workout-exercises');
         const addExerciseBtn = document.getElementById('add-exercise-btn');
 
-        
+        // Obtén la plantilla del prototipo
         const prototypeTemplate = workoutExercisesContainer.dataset.prototype;
 
         addExerciseBtn.addEventListener('click', () => {
-            const newFormHtml = prototypeTemplate.replace(/__name__/g, workoutExercisesContainer.children.length);
-            workoutExercisesContainer.insertAdjacentHTML('beforeend', newFormHtml);
+            const newIndex = workoutExercisesContainer.children.length; // Calcula el índice correcto
+            const newFormHtml = prototypeTemplate.replace(/__name__/g, newIndex); // Sustituye el placeholder
+            const newExerciseElement = document.createElement('div'); // Crea un nuevo contenedor
+            newExerciseElement.classList.add('workout-exercise-item', 'bg-gray-100', 'p-4', 'mb-4', 'rounded-lg', 'shadow');
+            newExerciseElement.innerHTML = newFormHtml; // Inserta el HTML de la plantilla
+            workoutExercisesContainer.appendChild(newExerciseElement); // Añade al DOM
         });
 
-        
+        // Eliminar un ejercicio
         workoutExercisesContainer.addEventListener('click', function (event) {
             if (event.target.classList.contains('remove-exercise-btn')) {
                 event.target.closest('.workout-exercise-item').remove();
@@ -42,3 +110,8 @@
         });
     });
 </script>
+{% endblock %}
+
+
+
+

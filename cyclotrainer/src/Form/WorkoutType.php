@@ -24,6 +24,7 @@ class WorkoutType extends AbstractType
                 'by_reference' => false,
                 'prototype' => true, // This line enables the prototype for dynamic forms
                 'prototype_name' => '__name__', // Placeholder name used by JavaScript
+                'label' => false,
             ]);
     }
 

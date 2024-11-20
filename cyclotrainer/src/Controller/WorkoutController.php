@@ -43,7 +43,7 @@ class WorkoutController extends AbstractController
             $entityManager->persist($workout);
             $entityManager->flush();
 
-            return $this->redirectToRoute('workouts', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('dashboard_user', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('workout/new.html.twig', [
