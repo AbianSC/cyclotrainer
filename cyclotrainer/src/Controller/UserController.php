@@ -37,7 +37,14 @@ class UserController extends AbstractController
     public function history(EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        $histories = $entityManager->getRepository(History::class)->findBy(['user' => $user]);
+        $histories = $entityManager->getRepository(History::class)->findBy(['user' => $user]) ?? [];
+
+        if(is_array($histories)) {
+            usort($histories, function($a,$b){
+                return $b->getDateWorkout() <=> $a->getDateWorkout();
+            });
+
+        }
         return $this->render('user/history.html.twig', [
             'histories' => $histories,
         ]);

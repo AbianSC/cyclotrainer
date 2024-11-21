@@ -30,6 +30,9 @@ class Exercise
     #[ORM\OneToMany(targetEntity: WorkoutExercise::class, mappedBy: 'exercise')]
     private Collection $workoutExercises;
 
+    #[ORM\Column(length: 255)]
+    private ?string $gif = null;
+
     public function __construct()
     {
         $this->workoutExercises = new ArrayCollection();
@@ -114,6 +117,18 @@ class Exercise
                 $workoutExercise->setExercise(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGif(): ?string
+    {
+        return $this->gif;
+    }
+
+    public function setGif(string $gif): static
+    {
+        $this->gif = $gif;
 
         return $this;
     }
