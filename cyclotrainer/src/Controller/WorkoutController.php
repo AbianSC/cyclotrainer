@@ -154,7 +154,7 @@ class WorkoutController extends AbstractController
             $workout->setUpdateAt(new \DateTime());
             $entityManager->flush();
 
-            return $this->redirectToRoute('dashboard_user', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_workout_show', ['id' => $workout->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('workout/edit.html.twig', [
